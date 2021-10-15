@@ -99,7 +99,7 @@ public class CalculatorApp {
 
         Options options = new Options();
 
-        options.addOption("f", "filename", true, "file name to load data from");
+        options.addOption("f", "filename", true, "file to log history data");
         return options;
     }
 
@@ -111,7 +111,7 @@ public class CalculatorApp {
         Options options = getOptions();
 
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("JavaStatsEx", options, true);
+        formatter.printHelp("CalculatorEx", options, true);
     }
 
 }
