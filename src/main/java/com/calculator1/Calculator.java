@@ -4,21 +4,33 @@ import com.helper.StringHelper;
 
 public class Calculator {
     private final char[] OPERATORS = {'+', '-', '*', '/'};
-    private final StringHelper stringHelper;
+    private StringHelper stringHelper;
 
     public Calculator() {
         stringHelper = new StringHelper();
     }
 
     public double calcalate(String input) throws Exception {
+        // clean space just to get subString, calculate faster because I read the input string char by char
         input = stringHelper.cleanSpace(input);
+
+        // add Priority because
+        // Example: 1+2*3 -> we need to calculate 2*3 first so I put it into the '(..)' -> 1+(2*3)
+        // and '/' operator and '*' operator is more priority than '+' operator and '-' operator
         input = addPriority(input);
+
         SubString subString;
+        // get one by one the smallest subString in '(..)' from the right
+        // Example: 1+2+(3+4)+(5+6) -> subString = 5+6, startIndex = 4 (position of '('), endIndex = 8 (position of ')')
+        //          1+2+(3+(4+5)) -> subString = 4+5
         while ((subString = stringHelper.getStringInsideChar(input, '('))!=null){
+            // calculate subString
             double expressionResult = calculateAnExpression(subString.getSubString());
-            String tmp = input.substring(0, subString.getStartIndex())+expressionResult+input.substring(subString.getEndIndex());
-            input = tmp;
+            // replace the result of subString to the subString
+            // Example: 1+2+(3+4)+(5+6) -> 1+2+(3+4)+11
+            input = input.substring(0, subString.getStartIndex())+expressionResult+input.substring(subString.getEndIndex());
         }
+        // after this while loop our input will have no '(..)' then calculate the input the last time
         return calculateAnExpression(input);
     }
 
@@ -96,6 +108,7 @@ public class Calculator {
         return number;
     }
 
+    //
     public double calculateAnExpression(String input) throws Exception {
         double result = 0;
         int presentOperator = 0;
@@ -123,6 +136,7 @@ public class Calculator {
         return result;
     }
 
+    //
     public double calcalate(double number1, int operator, double number2) throws Exception {
         switch (operator) {
             case 0:

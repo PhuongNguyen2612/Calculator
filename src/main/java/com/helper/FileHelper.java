@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FileHelper {
-    private BufferedReader bufferedReader;
     private PrintWriter printWriter;
     private String fileName;
 
