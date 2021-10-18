@@ -4,7 +4,7 @@ import com.helper.StringHelper;
 
 public class Calculator {
     private final char[] OPERATORS = {'+', '-', '*', '/'};
-    private final StringHelper stringHelper;
+    private StringHelper stringHelper;
 
     public Calculator() {
         stringHelper = new StringHelper();
