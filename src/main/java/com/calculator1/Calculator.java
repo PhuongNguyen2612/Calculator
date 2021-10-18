@@ -15,7 +15,7 @@ public class Calculator {
         input = stringHelper.cleanSpace(input);
 
         // add Priority because
-        // Example: 1+2*3 -> we need to calculate 2*3 first so I put it into the '(..)' -> 1+(2*3)
+        // Example: 1+2*3 -> we need to calculate 2*3 first, so I put it into the '(..)' -> 1+(2*3)
         // and '/' operator and '*' operator is more priority than '+' operator and '-' operator
         input = addPriority(input);
 
@@ -23,12 +23,12 @@ public class Calculator {
         // get one by one the smallest subString in '(..)' from the right
         // Example: 1+2+(3+4)+(5+6) -> subString = 5+6, startIndex = 4 (position of '('), endIndex = 8 (position of ')')
         //          1+2+(3+(4+5)) -> subString = 4+5
-        while ((subString = stringHelper.getStringInsideChar(input, '('))!=null){
+        while ((subString = stringHelper.getStringInsideChar(input, '(')) != null) {
             // calculate subString
             double expressionResult = calculateAnExpression(subString.getSubString());
             // replace the result of subString to the subString
             // Example: 1+2+(3+4)+(5+6) -> 1+2+(3+4)+11
-            input = input.substring(0, subString.getStartIndex())+expressionResult+input.substring(subString.getEndIndex());
+            input = input.substring(0, subString.getStartIndex()) + expressionResult + input.substring(subString.getEndIndex());
         }
         // after this while loop our input will have no '(..)' then calculate the input the last time
         return calculateAnExpression(input);
@@ -38,7 +38,7 @@ public class Calculator {
         return c == '+' || c == '-';
     }
 
-    public String addPriority (String s) {
+    public String addPriority(String s) {
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '*' || s.charAt(i) == '/') {
                 int oldLength = s.length();
@@ -95,8 +95,8 @@ public class Calculator {
     }
 
     // accepts numbers from -20 to 20
-    private boolean checkNumberLimit(double number){
-        return (number<=20) && (number>=-20);
+    private boolean checkNumberLimit(double number) {
+        return (number <= 20) && (number >= -20);
     }
 
     private double parseDouble(String s) throws Exception {
@@ -108,14 +108,17 @@ public class Calculator {
         return number;
     }
 
-    //
+    // calculate one by one from left to right
+    // Example: 1-2+3 value of result is change one by one is result: 0+1=1;operator=1; result: 1-2=-1; operator=0; i = input.length -> result: -1+3=2
     public double calculateAnExpression(String input) throws Exception {
         double result = 0;
         int presentOperator = 0;
         for (int i = 0; i < input.length(); i++) {
             if (getOperator(input.charAt(i)) != -1) {
-                if (i==0){
-                    if (input.charAt(i)=='+'||input.charAt(i)=='-') {
+
+                // we have -2, +2 value but not have *2, /2 value
+                if (i == 0) {
+                    if (input.charAt(i) == '+' || input.charAt(i) == '-') {
                         continue;
                     } else {
                         throw new Exception("Operator position is wrong!");
